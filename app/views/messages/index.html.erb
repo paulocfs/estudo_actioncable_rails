@@ -1,0 +1,25 @@
+<%= tag.div do %>
+  <%= tag.div id: "messages", class: "h-96 overflow-auto" do %>
+    <% Message.last(10).each do |message| %>
+      <%= tag.p message.content %>
+    <% end %>
+  <% end %>
+
+  <%= form_with model: Message.new do |f| %>
+    <%= f.text_field :content, placeholder: "message..." %>
+    <%= f.submit "send", class: "p-2 font-bold" %>
+  <% end %>
+<% end %>
+
+
+
+<!--
+1- cria formulario e faz o submit normal do dado (a mensagem), posso usar o local true para evitar refresh
+2- o controlador salva o dado no banco
+3- assim que salva, o controlador envia o dado salvo para o canal (nome que vc deu para o canal)
+4- o js fica escutando esse canal e assim que percebe que tem um dado novo, pega o dado no received() //chat_channel.js
+5- dai e so fazer sua logica pra exibir o dado recebido na view
+
+obs: eu poderia evitar redirects para não ter refresh e local true no formulario
+obs: o item 3 poderia ser feito dentro de create ou chamando um metodo privado no controlador ou ate mesmo na model (por meio de callback)
+-->
